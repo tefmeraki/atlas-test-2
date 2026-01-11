@@ -2,79 +2,60 @@
 <html lang="es">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ATLAS Club · MVP</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ATLAS Club MVP</title>
+  <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
-  <header>
-    <h1>ATLAS Club · MVP</h1>
-    <p class="muted">Frontend muy simple (Fase 3 · Iteración 4) para probar la API.</p>
-    <p class="muted">Backend esperado: <code>http://localhost:8080</code></p>
-  </header>
+  <h1>ATLAS Club MVP</h1>
+  <p class="muted">Demo end-to-end (frontend simple consumiendo API)</p>
 
-  <main class="grid">
-    <section class="card">
-      <h2>Health</h2>
-      <button id="btn-health">Probar /api/health</button>
-      <pre id="out-health" class="out"></pre>
-    </section>
+  <section class="card">
+    <h2>Estado</h2>
+    <button id="btnHealth">Comprobar /api/health</button>
+    <pre id="healthOut"></pre>
+  </section>
 
-    <section class="card">
+  <section class="grid">
+    <div class="card">
       <h2>Socios</h2>
-      <form id="form-member" class="form">
-        <label>Nombre completo
-          <input name="fullName" required placeholder="Ej: Ana Pérez" />
-        </label>
-        <label>Email
-          <input name="email" type="email" required placeholder="ana@correo.com" />
-        </label>
-        <button type="submit">Crear socio</button>
-      </form>
-      <div class="row">
-        <button id="btn-members">Cargar socios</button>
-      </div>
-      <pre id="out-members" class="out"></pre>
-    </section>
+      <button id="btnLoadMembers">Cargar socios</button>
+      <pre id="membersOut"></pre>
 
-    <section class="card">
+      <h3>Crear socio</h3>
+      <form id="memberForm">
+        <label>Nombre completo <input name="fullName" required /></label>
+        <label>Email <input name="email" type="email" required /></label>
+        <label>Fecha alta <input name="joinDate" type="date" required /></label>
+        <button type="submit">Crear</button>
+      </form>
+      <pre id="memberCreateOut"></pre>
+    </div>
+
+    <div class="card">
       <h2>Instalaciones</h2>
-      <button id="btn-facilities">Cargar instalaciones</button>
-      <pre id="out-facilities" class="out"></pre>
-    </section>
+      <button id="btnLoadFacilities">Cargar instalaciones</button>
+      <pre id="facilitiesOut"></pre>
+    </div>
+  </section>
 
-    <section class="card">
-      <h2>Reservas</h2>
-      <form id="form-booking" class="form">
-        <label>Member ID
-          <input name="memberId" required placeholder="Ej: 1" />
-        </label>
-        <label>Facility ID
-          <input name="facilityId" required placeholder="Ej: 1" />
-        </label>
-        <label>Fecha (YYYY-MM-DD)
-          <input name="date" required placeholder="2026-01-11" />
-        </label>
-        <label>Hora inicio (HH:MM)
-          <input name="startTime" required placeholder="18:00" />
-        </label>
-        <label>Hora fin (HH:MM)
-          <input name="endTime" required placeholder="19:00" />
-        </label>
-        <button type="submit">Crear reserva</button>
-      </form>
-      <div class="row">
-        <button id="btn-bookings">Cargar reservas</button>
-      </div>
-      <pre id="out-bookings" class="out"></pre>
-    </section>
+  <section class="card">
+    <h2>Reservas</h2>
+    <button id="btnLoadBookings">Cargar reservas</button>
+    <pre id="bookingsOut"></pre>
 
-  </main>
+    <h3>Crear reserva</h3>
+    <form id="bookingForm">
+      <label>memberId <input name="memberId" type="number" min="1" required /></label>
+      <label>facilityId <input name="facilityId" type="number" min="1" required /></label>
+      <label>Fecha <input name="date" type="date" required /></label>
+      <label>Inicio <input name="startTime" type="time" required /></label>
+      <label>Fin <input name="endTime" type="time" required /></label>
+      <button type="submit">Crear</button>
+    </form>
+    <pre id="bookingCreateOut"></pre>
+  </section>
 
-  <footer class="muted">
-    <p>Nota: esto NO es un frontend bonito; es un panel de pruebas para el tribunal y para demo.</p>
-  </footer>
-
-  <script src="app.js"></script>
+  <script src="./app.js"></script>
 </body>
 </html>
