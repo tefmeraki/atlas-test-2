@@ -1,8 +1,21 @@
-# Frontend (placeholder) — ATLAS Iteración 0
+# Frontend (Iteración 4)
 
-En la Fase 3 (Iteración 0) NO se implementa frontend real.
-Este directorio existe solo para dejar preparada la estructura del repo.
+Frontend **muy simple** (HTML + JS) para probar el backend.
 
-En iteraciones posteriores, si se decide UI mínima:
-- puede ser una página estática muy simple o
-- se puede mantener solo Swagger / Postman para demo.
+## Cómo usar
+
+1) Arranca el backend (Spring Boot) en `http://localhost:8080`.
+2) Abre `index.html` en el navegador.
+
+> Si tu navegador bloquea `fetch` por abrir el HTML con `file://`, usa un servidor estático:
+
+```bash
+# opción A (python)
+python -m http.server 5173
+
+# opción B (node)
+npx serve -l 5173
+```
+
+Y luego abre:
+- `http://localhost:5173/frontend/index.html`
