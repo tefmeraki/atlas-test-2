@@ -1,6 +1,7 @@
-
 package com.atlas.club.service;
 
+import com.atlas.club.exception.BadRequestException;
+import com.atlas.club.exception.NotFoundException;
 import com.atlas.club.model.Actividad;
 import com.atlas.club.model.Inscripcion;
 import com.atlas.club.model.Socio;
@@ -8,39 +9,52 @@ import com.atlas.club.repository.ActividadRepository;
 import com.atlas.club.repository.InscripcionRepository;
 import com.atlas.club.repository.SocioRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class InscripcionService {
 
     private final InscripcionRepository inscripcionRepository;
-    private final ActividadRepository actividadRepository;
     private final SocioRepository socioRepository;
+    private final ActividadRepository actividadRepository;
 
-    public InscripcionService(InscripcionRepository inscripcionRepository,
-                              ActividadRepository actividadRepository,
-                              SocioRepository socioRepository) {
+    public InscripcionService(
+            InscripcionRepository inscripcionRepository,
+            SocioRepository socioRepository,
+            ActividadRepository actividadRepository
+    ) {
         this.inscripcionRepository = inscripcionRepository;
-        this.actividadRepository = actividadRepository;
         this.socioRepository = socioRepository;
+        this.actividadRepository = actividadRepository;
     }
 
+    @Transactional
     public Inscripcion inscribir(Long socioId, Long actividadId) {
-        Socio socio = socioRepository.findById(socioId)
-                .orElseThrow(() -> new IllegalArgumentException("Socio no existe"));
-
-        Actividad actividad = actividadRepository.findById(actividadId)
-                .orElseThrow(() -> new IllegalArgumentException("Actividad no existe"));
-
-        long plazasOcupadas = inscripcionRepository.countByActividadAndEstado(actividad, "ACTIVA");
-        if (plazasOcupadas >= actividad.getPlazasTotales()) {
-            throw new IllegalStateException("No hay plazas disponibles");
+        if (socioId == null || actividadId == null) {
+            throw new BadRequestException("socioId y actividadId son obligatorios.");
         }
 
-        Inscripcion inscripcion = new Inscripcion();
-        inscripcion.setSocio(socio);
-        inscripcion.setActividad(actividad);
-        inscripcion.setEstado("ACTIVA");
+        Socio socio = socioRepository.findById(socioId)
+                .orElseThrow(() -> new NotFoundException("Socio no encontrado: id=" + socioId));
 
-        return inscripcionRepository.save(inscripcion);
+        Actividad actividad = actividadRepository.findById(actividadId)
+                .orElseThrow(() -> new NotFoundException("Actividad no encontrada: id=" + actividadId));
+
+        long actuales = inscripcionRepository.countByActividadIdAndEstado(actividadId, "ACTIVA");
+        if (actuales >= actividad.getPlazasMax()) {
+            throw new BadRequestException("No hay plazas disponibles para la actividad id=" + actividadId);
+        }
+
+        Inscripcion ins = new Inscripcion();
+        ins.setSocio(socio);
+        ins.setActividad(actividad);
+        ins.setEstado("ACTIVA");
+        return inscripcionRepository.save(ins);
+    }
+
+    public List<Inscripcion> listar() {
+        return inscripcionRepository.findAll();
     }
 }
